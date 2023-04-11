@@ -25,36 +25,34 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 for char in data:
                     if char.isalpha():
                         if char.isupper():
-                        shifted_char = chr((ord(char) - ord('A') + 3) % 26 + ord('a'))
-                    else:
-                        shifted_char = chr((ord(char) - ord('a') + 3) % 26 + ord('A'))
-                        decoded_data += shifted_char
+                            shifted_char = chr((ord(char) - ord('A') + 3) % 26 + ord('A'))
+                        else:
+                            shifted_char = chr((ord(char) - ord('a') + 3) % 26 + ord('a'))
                     elif char.isdigit():
-                    if int(char) < 5:
-                        shifted_char = (int(char)+5)
+                        if int(char) < 5:
+                            shifted_char = str(int(char) + 5)
+                        else:
+                            shifted_char = str(int(char) - 5)
                     else:
-                        shifted_char = (int(char)-5)
-                    decoded_data += str(shifted_char)
-                else:
-                        decoded_data += char
+                        shifted_char = char
+                    decoded_data += shifted_char
                 print('Mensaje recibido del cliente:', decoded_data)
                 # Enviar una respuesta al cliente
                 response = input('Ingrese una respuesta al cliente: ')
                 response = unidecode(response)
-            # Codificar la respuesta utilizando el algoritmo César
+                # Codificar la respuesta utilizando el algoritmo César
                 encoded_response = ''
                 for char in response:
                     if char.isalpha():
                         if char.isupper():
-                        shifted_char = chr((ord(char) - ord('A') - 3) % 26 + ord('a'))
-                    else:
-                        shifted_char = chr((ord(char) - ord('a') - 3) % 26 + ord('A'))
-                        encoded_response += shifted_char
+                            shifted_char = chr((ord(char) - ord('A') - 3) % 26 + ord('A'))
+                        else:
+                            shifted_char = chr((ord(char) - ord('a') - 3) % 26 + ord('a'))
                     elif char.isdigit():
-                    shifted_char = (int(char)-5)%10
-                    encoded_response += str(shifted_char)
-                else:
-                        encoded_response += char
+                        shifted_char = str((int(char) - 5) % 10)
+                    else:
+                        shifted_char = char
+                    encoded_response += shifted_char
                 conn.sendall(encoded_response.encode('utf-8'))
     except OSError as e:
         print(f"Ocurrió un error al tratar de crear o usar un socket: {e}")

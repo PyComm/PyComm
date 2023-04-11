@@ -21,19 +21,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             message = input('Ingrese un mensaje: ')
             
             message = unidecode(message)
-        # Codificar el mensaje utilizando el algoritmo César
+            
+            # Codificar el mensaje utilizando el algoritmo César
             encoded_message = ''
             for char in message:
                 if char.isalpha():
                     if char.isupper():
-                    shifted_char = chr((ord(char) - ord('A') - 3) % 26 + ord('a'))
-                else:
-                    shifted_char = chr((ord(char) - ord('a') - 3) % 26 + ord('A'))
+                        shifted_char = chr((ord(char) - ord('A') - 3) % 26 + ord('A'))
+                    else:
+                        shifted_char = chr((ord(char) - ord('a') - 3) % 26 + ord('a'))
                     encoded_message += shifted_char
                 elif char.isdigit():
-                shifted_char = (int(char)-5)%10
-                encoded_message += str(shifted_char)
-            else:
+                    shifted_char = str((int(char) - 5) % 10)
+                    encoded_message += shifted_char
+                else:
                     encoded_message += char
             
             # Enviar el mensaje al servidor
@@ -51,25 +52,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             for char in data:
                 if char.isalpha():
                     if char.isupper():
-                    shifted_char = chr((ord(char) - ord('A') + 3) % 26 + ord('a'))
-                else:
-                    shifted_char = chr((ord(char) - ord('a') + 3) % 26 + ord('A'))
+                        shifted_char = chr((ord(char) - ord('A') + 3) % 26 + ord('A'))
+                    else:
+                        shifted_char = chr((ord(char) - ord('a') + 3) % 26 + ord('a'))
                     decoded_response += shifted_char
                 elif char.isdigit():
-                if int(char) < 5:
-                    shifted_char = (int(char)+5)
+                    shifted_char = str((int(char) + 5) % 10)
+                    decoded_response += shifted_char
                 else:
-                    shifted_char = int(char)-5
-                decoded_response += str(shifted_char)
-            else:
                     decoded_response += char
             
     
-        print('Respuesta recibida del servidor:', decoded_response)
+            print('Respuesta recibida del servidor:', decoded_response)
             # Guardar el mensaje en el archivo de log con fecha y hora
             timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
             log_file.write(f"{timestamp} Servidor: {decoded_response}\n")
-    
+
     except KeyboardInterrupt:
         print('Saliendo del programa...')
         timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
@@ -92,5 +90,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
         log_file.write(f"{timestamp} Error desconocido\n")
 
-# Cerrar el archivo de log
 log_file.close()
