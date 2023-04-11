@@ -2,10 +2,15 @@ import socket
 import datetime
 import sys
 from unidecode import unidecode
+import os
 
 # Definir host y puerto
 HOST = '127.0.0.1'
 PORT = 65435
+
+# Crear el directorio si no existe
+if not os.path.exists("logs"):
+    os.makedirs("logs")
 
 # Crear un archivo de log con fecha y hora
 log_filename = "logs/" + datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
